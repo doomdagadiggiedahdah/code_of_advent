@@ -4,16 +4,48 @@ import re
 with open("./day01input.txt", "r") as f:
     input_data = f.read().splitlines() # .splitlines() gives a list of each line. This is nice.
 
+
+ONES = {'zero': "ze0ro",
+        'one': "on1e",
+        'two': "tw2o",
+        'three': "thr3ee",
+        'four': "fo4ur",
+        'five': "fi5ve",
+        'six': "si6x",
+        'seven': "sev7en",
+        'eight': "eigh8t",
+        'nine': "ni9ne"}
+
+
+def words2nums(updating_string):
+    for k, v in ONES.items():
+        if k in updating_string:
+            # updating_string = re.sub(f'({k})', '\\1\\1', updating_string)
+            updating_string = re.sub(k, v, updating_string)
+            # print(updating_string)
+    return updating_string
+
+# print(words2nums("jjhxddmg5mqxqbgfivextlcpnvtwothreetwonerzk"))
+
+
 PAYLOAD_BOI = 0
 # strip all numbers and print
 for i in input_data:
-    # print(input_data[i] + "::: result of :::: " + re.sub('\D', '', input_data[i])) # manual check to see the regex
-    # ok, I can get all of the numbers out. now what?
-    just_numbers = re.sub('\D', '', i)
-    # print(int(just_numbers[0] + just_numbers[-1]))
+    just_numbers = re.sub('\D', '', words2nums(i))
     PAYLOAD_BOI += int(just_numbers[0] + just_numbers[-1])
-    # need to take the first and last numbers, combine them, and then add them. The last two steps happen for both of these "streams"
+    print(i + " ::: result of :::: " + re.sub('\D', '', words2nums(i)) + " ::: " + str(just_numbers[0] + just_numbers[-1])) # manual check to see the regex
+
 print(PAYLOAD_BOI)
+
+
+"""
+So I got the string to take works in and convert, but it didn't pick everything up.
+I can hold that the first / last digit part is working, and it's probably the new code.
+I've noticed one problem already, and would bank on that being it. Let's try that.
+"""
+
+
+
 
 
 
@@ -52,3 +84,25 @@ but either way this was nice and calm.
 Doign the write out to make sure I understood the problem was good and then I went right to the answer. The code I wrote was pretty straightforward.
 I didn't have to do a lot of searching for alt methods, I had a few questions I googled and everything came together right away. This was relaxing.
 """
+
+"""
+Thoughts on part two: (2023.12.03__16.58.41) -- 
+man that elf did a number [;)] on this file. well.
+
+adjust the regex to include the numbers 0-9, but need to keep the order.
+Damn. That makes things harder. Can I combine regexes? 
+
+Ugh alright new regex is something to tackle some more.
+
+I'll also need to convert text numbers into number numbers.
+OH WAIT: what if I just sed the words to numbers, and then plug it into the rest of the code? ❤️ ❤️ ❤️
+(there's a possibility that if there's a number at the end that's also part of a number just before it, could be an issue. like, "twone" if that's at the end. Let's try the og one and keep that in mind.)
+Yeah this wasn't correct, but it did   get the correct answer: jjhxddmg5mqxqbgfivextlcpnvtwothreetwonerzk ::: result of :::: 55231 ::: 51
+
+
+So, sed the text to numbers, run it through the same code. Awesome :)
+
+newstring = re.sub('(Banana)', r'\1Toothpaste', oldstring)  :::: from https://stackoverflow.com/questions/12714415/python-equivalent-to-sed
+the \1 replaces the first section back into the string, which could be a help
+"""
+
