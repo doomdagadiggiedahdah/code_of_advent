@@ -20,7 +20,6 @@ ONES = {'zero': "ze0ro",
 def words2nums(updating_string):
     for k, v in ONES.items():
         if k in updating_string:
-            # updating_string = re.sub(f'({k})', '\\1\\1', updating_string)
             updating_string = re.sub(k, v, updating_string)
             # print(updating_string)
     return updating_string
