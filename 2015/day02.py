@@ -1,5 +1,5 @@
 """
-(2023.12.06__01.17.45) -- (2023.12.06__01.38.01) 
+(2023.12.06__01.17.45) -- (2023.12.06__01.38.01) (whoops, didn't save the time for part two, but it was quick)
 
 wasn't 1715567
 sort didn't work on integers, needed to convert to ints first.
