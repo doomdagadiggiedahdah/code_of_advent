@@ -28,40 +28,80 @@ Before running, I would imagine the output that I wanted, and if the program wen
 
 Another helpful thing, I can slice through the list I'm working on to find a small range that has the edge cases I'm looking for
 If the code I'm writing isn't being tested by the input, I can move around to find that range to work on.
-"""
+Also makes sense why the AOC videos I wanted would try out their algos only on the example inputs.
+--------------------------------------------------------------------------
+(2023.12.06__17.51.06) -- (2023.12.06__18.41.40) 
 
+New patterns to find.
+- If any pair of letters are repeated, but not inclusive (like "xxx" wouldn't count)
+    - Can do this with taking two characters from a string, replacing them and then matching
+    - iterate on each char of the line
+- AND a pattern of a single letter, other letter, then first letter again. 
+    - I can do regex with a variable right? Like {line[letter]}\w{line[letter]}
+
+I know that my code for the second one works, I just need to put it in the right
+I don't like how I'm putting this code together tbh. I have to rely on stops a lot and that seems shaky. Not solid.
+I got this part working because of putting in breaks at the right places (the loops would run until they either proved wrong or were satisfied.)
+"""
+import re 
 input_data = open("./day05input.txt", "r").read().splitlines()
 
 bad_combos = ["ab", "cd", "pq", "xy"]
 PAYLOAD_BOI = 0
 
+
+
+### Part Two ###
+# [12:13]
 for line in input_data:
-    print(line)
-    # get rid of bad combos. the single line goes to next checkpoint.
-    if any(i in line for i in bad_combos):
-        # print(f"{line} had a bad character")
-        continue
-    # else:
-    #     print(f"{line} had ZERO bad characters")
-    
-    # Vowel count
-    vowel_count = 0
-    vowel_map = map(line.count, "aeiou")
 
-    for i in vowel_map:
-        vowel_count += i
-    # print(f"Num of vowels {vowel_count}")
-    if vowel_count < 3:
-        continue
-
-    # double letters
     for letter in range(len(line)-1):
-        if line[letter] == line[letter+1]:
-            # print(line)
-            PAYLOAD_BOI += 1
-            # print("This one made it \n")
+        match_me = line[letter] + line[letter + 1]
+        print(match_me)
+        subbed_line = re.sub(match_me, "..", line, count=1)
+        print(subbed_line)
+        if match_me in subbed_line:
+            print() # This has to keep going, 
+            print(f"{line} checking for FBF_match now")
+
+            for l in range(len(line)-1):
+                FBF_match = re.search(f'{line[l]}[a-z]{line[l]}', line)
+                print(FBF_match)
+                if FBF_match:
+                    PAYLOAD_BOI += 1
+                    break
             break
-        # else:
-        #     print("hit the braeks")
 
 print(PAYLOAD_BOI)
+
+### Part One ###
+# for line in input_data:
+#     print(line)
+#     # get rid of bad combos. the single line goes to next checkpoint.
+#     if any(i in line for i in bad_combos):
+#         # print(f"{line} had a bad character")
+#         continue
+#     # else:
+#     #     print(f"{line} had ZERO bad characters")
+    
+#     # Vowel count
+#     vowel_count = 0
+#     vowel_map = map(line.count, "aeiou")
+
+#     for i in vowel_map:
+#         vowel_count += i
+#     # print(f"Num of vowels {vowel_count}")
+#     if vowel_count < 3:
+#         continue
+
+#     # double letters
+#     for letter in range(len(line)-1):
+#         if line[letter] == line[letter+1]:
+#             # print(line)
+#             PAYLOAD_BOI += 1
+#             # print("This one made it \n")
+#             break
+#         # else:
+#         #     print("hit the braeks")
+
+# print(PAYLOAD_BOI)
