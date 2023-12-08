@@ -42,7 +42,14 @@ New patterns to find.
 I know that my code for the second one works, I just need to put it in the right
 I don't like how I'm putting this code together tbh. I have to rely on stops a lot and that seems shaky. Not solid.
 I got this part working because of putting in breaks at the right places (the loops would run until they either proved wrong or were satisfied.)
+
+And there's still something I can learn from not having the add to PAYLOAD in the right places. I'm not thinking about the termination of cycles correctly.
+Finding out what it is that I want to complete should give a hint as to where I want the update to come in.
+As well as noting whether or not I want the loop to stop after a certain event happening.
+
+Also realized that I could've tested the FBF_match easier (without needing re), in this case I'm only working with letters so I could've just done line[l] == line[l+2]
 """
+
 import re 
 input_data = open("./day05input.txt", "r").read().splitlines()
 
@@ -50,29 +57,34 @@ bad_combos = ["ab", "cd", "pq", "xy"]
 PAYLOAD_BOI = 0
 
 
-
 ### Part Two ###
-# [12:13]
 for line in input_data:
 
     for letter in range(len(line)-1):
         match_me = line[letter] + line[letter + 1]
-        print(match_me)
+        # print(match_me)
         subbed_line = re.sub(match_me, "..", line, count=1)
-        print(subbed_line)
+        # print(subbed_line)
+
         if match_me in subbed_line:
             print() # This has to keep going, 
-            print(f"{line} checking for FBF_match now")
+            # print(f"{line} checking for FBF_match now")
 
             for l in range(len(line)-1):
                 FBF_match = re.search(f'{line[l]}[a-z]{line[l]}', line)
-                print(FBF_match)
+                # print(FBF_match)
                 if FBF_match:
                     PAYLOAD_BOI += 1
                     break
             break
 
 print(PAYLOAD_BOI)
+
+
+
+
+
+
 
 ### Part One ###
 # for line in input_data:
