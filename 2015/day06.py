@@ -116,6 +116,7 @@ Let's do some tests to see if it's working as I'd hope.
 Toggle isn't working. (nice, was able to find this out immediately. 😄) I get the sums from each step and the first toggle steps should give me some, but AREN'T.
 blast from the past:- In case I need it, I'd just take the difference of the two x and y coors and multiply them by eachother, compare that with the sum of the graph
 jeez, mixed up assignment and equal operations. yikes.
+But, after that it worked perfectly ❤️
 
 
 (( random idea, may've already written on this. Something I noticed from watching the dudes go through the
@@ -143,6 +144,22 @@ grid[1,:] = "6" # changing values of a row
 grid[1:3,1] = "6" # changing values of a slice of a column.
 
 
+### Part Two ###
+
+all we're doing is changing the instructions.
+
+lights can't go below zero
+turn on += 1
+turn off -= 1
+    if grid[y][x] == 0:
+        continue
+toggle += 2
+
+oh, another thing I was happy about, before I started randomly trying out where I should put print statements (no points for guessing)
+I thought about the loop structures and put it in the right spot on the first time. Nice :)
+
+YES!!! Got the second answer on the first try! I like understanding exactly what's going on in code, that feels really good!
+
 """
 import re
 import numpy as np
@@ -161,33 +178,41 @@ for line in input_data:
     coor2_y = numbers[2]
     coor2_x = numbers[3]
 
-    def make_box(value):
+    # Part One
+    # def make_box(value):
+    #     for y in range(coor1_y, coor2_y + 1):
+    #         grid[y][ coor1_x : coor2_x + 1 ] = value
+    
+    def turn_on():
         for y in range(coor1_y, coor2_y + 1):
-            grid[y][ coor1_x : coor2_x + 1 ] = value
-            # print(y)
-        # print(grid)
+            grid[y][ coor1_x : coor2_x + 1 ] += 1
+
+    def turn_off():
+        for y in range( coor1_y, coor2_y + 1 ):
+            for x in range( coor1_x, coor2_x + 1 ):
+                if grid[y][x] == 0:
+                    continue
+                else:
+                    grid[y][x] -= 1
 
     def toggle():
         print("srarting Toggle")
         for y in range( coor1_y, coor2_y + 1 ):
-            for x in range( coor1_x, coor2_x + 1 ):
-                # print(grid[y][x])
-                if grid[y][x] == 0:
-                    # print("Before and After")
-                    # print(f"We have result:{grid[y][x]} where value y == {y} and x == {x}")
-                    # print(type(y))
-                    grid[y][x] = 1 # this isn't updating it?
-                    # print(grid[y][x])
-                else:
-                    grid[y][x] = 0
-            # print(f"Went through coor {grid[y]}")
+            grid[y][ coor1_x : coor2_x + 1 ] += 2
+            # for x in range( coor1_x, coor2_x + 1 ):
+            #     grid[y][x] += 2
 
+                # Part One boi
+                # if grid[y][x] == 0:
+                #     grid[y][x] = 1 
+                # else:
+                #     grid[y][x] = 0
 
     # control flow
     if "turn off" in line:
-        make_box(0)
+        turn_off()
     elif "turn on" in line:
-        make_box(1)
+        turn_on()
     elif "toggle" in line:
         #??????
         toggle()
