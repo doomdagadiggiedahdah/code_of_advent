@@ -6,19 +6,15 @@ input_data = open("./day06input.txt", "r").read().splitlines()
 
 for line in input_data[15:19]:
 
-    words = line.split(" ")
-    print(words)
-    if words[1] != "off" and words[1] != "on":
+    if "toggle" in line:
         print(line)
-        print(f"Toggle gottem ")
-        # Then this is toggle
-    else:
-        if words[1] == "on": # turn that shit up
-            print(line)
-            print(words[1])
-        else: # turn that shit off
-            print(line)
-            print(words[1])
+        print("toggle detected")
+    elif "turn off" in line:
+        print(line)
+        print("turn off detected")
+    elif "turn on" in line:
+        print(line)
+        print("turn on detected")
 
 
     numbers = re.findall(r'\d+', line)

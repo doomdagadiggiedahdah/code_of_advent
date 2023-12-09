@@ -80,7 +80,48 @@ else:
     else:
         # turn that shit off
 Let's just try it.
+This was wonky and unnecessary. This works just as well
+`if "toggle" in line:`
 
+
+Next then is figuring out what to do for each of those.
+- off = 0 (for that grid action in make_box())
+- on = 1
+- toggle. 
+    - Needs to get current value and then flip it. Make a function I think.
+
+
+### toggle functionality ###
+there seems like some weirdness because of the slice, maybe I can work with that though, get a list of the results, list comp and then write that?
+(maybe I come back to this after I've written the other code.)
+
+Ugh getting all over the place. How about feeding in a single value from the data to actually change something? That sounds nice.
+Got that, now what? getting new variables to work as expected. Got that now as well (with a simple test example! small uncertainty)
+Ok, now how about testing just the on/off functionality? htat's easy
+I could write a test function that counts how many lights are on at a given time, but so far all the logic has turned out great.
+    - In case I need it, I'd just take the difference of the two x and y coors and multiply them by eachother, compare that with the sum of the graph
+Instead I'd like to focus on Toggle again.
+
+### Toggle FRFR ###
+get current value, if a get b and then assign that as `value`. Iterate. How to fit this into existing structure though?
+how can I get current value with this structure?
+I don't think I can use `grid[i][ coor1_x : coor2_x + 1 ] = value` because the values aren't the same throughout.
+I get current y first then x.
+I think I got it, my two main uncertainties are:
+
+1. am I summing correctly, and
+2. is the toggle working as it should?
+My summing doesn't seem to be the problem, I'm getting consistent results with the diff sum commands.
+Let's do some tests to see if it's working as I'd hope. 
+Toggle isn't working. (nice, was able to find this out immediately. 😄) I get the sums from each step and the first toggle steps should give me some, but AREN'T.
+blast from the past:- In case I need it, I'd just take the difference of the two x and y coors and multiply them by eachother, compare that with the sum of the graph
+jeez, mixed up assignment and equal operations. yikes.
+
+
+(( random idea, may've already written on this. Something I noticed from watching the dudes go through the
+AOC challenges was that they were mostly looking at the code to understand the behavior, not the results.
+I interpret this as "I hvae command enough of the language that I can put the results together without needing
+to see them". That's a goal. Kinda reminds me of sightreading. ))
     
 ### Milestones ###
 - From a pair of coordinates, draw out sides of a rectangle, or just start with the four corners (done! sides next)
@@ -103,31 +144,58 @@ grid[1:3,1] = "6" # changing values of a slice of a column.
 
 
 """
+import re
 import numpy as np
 input_data = open("./day06input.txt", "r").read().splitlines()
 
-grid = np.zeros((7,7))
-# print(grid)
+grid = np.zeros((1000,1000))
 
-# Test values
-coor1 = "1,1"
-coor2 = "4,6"
+for line in input_data:
 
-first = coor1.split(",")
-second = coor2.split(",")
+    # "turn off 2,5 through 8,8"
+    numbers = re.findall(r'\d+', line)
+    numbers = [int(i) for i in numbers]
+
+    coor1_y = numbers[0]
+    coor1_x = numbers[1]
+    coor2_y = numbers[2]
+    coor2_x = numbers[3]
+
+    def make_box(value):
+        for y in range(coor1_y, coor2_y + 1):
+            grid[y][ coor1_x : coor2_x + 1 ] = value
+            # print(y)
+        # print(grid)
+
+    def toggle():
+        print("srarting Toggle")
+        for y in range( coor1_y, coor2_y + 1 ):
+            for x in range( coor1_x, coor2_x + 1 ):
+                # print(grid[y][x])
+                if grid[y][x] == 0:
+                    # print("Before and After")
+                    # print(f"We have result:{grid[y][x]} where value y == {y} and x == {x}")
+                    # print(type(y))
+                    grid[y][x] = 1 # this isn't updating it?
+                    # print(grid[y][x])
+                else:
+                    grid[y][x] = 0
+            # print(f"Went through coor {grid[y]}")
 
 
-def make_box():
-    for i in range(int(first[0]), int(second[0]) + 1):
-        grid[i][ int(first[1]):int(second[1]) + 1 ] = 1
-        print(i)
-    # grid[ int(second[0]) ][ int(second[1]):int(first[1]) ] = 1 
-    print(grid)
+    # control flow
+    if "turn off" in line:
+        make_box(0)
+    elif "turn on" in line:
+        make_box(1)
+    elif "toggle" in line:
+        #??????
+        toggle()
+    print(f"Line {line} is giving " + str(np.sum(grid)))
     
 
-grid[ int(first[0]) ][ int(first[1]) ] = 1
-grid[ int(second[0]) ][ int(second[1]) ] = 1
-print(coor1)
-print(coor2)
-print(grid)
-make_box()
+
+# print(np.sum(grid))
+# print(grid.sum(axis=0))
+# print(sum(grid.sum(axis=0)))
+# print(sum(grid))
