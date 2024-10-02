@@ -25,6 +25,7 @@ zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw
 #          return 0
 
 
+
 def get_index(line, l_ind, offset):
    return print(l_ind+offset) if len(set(line[l_ind:l_ind + offset])) == offset else 0
 
@@ -40,3 +41,21 @@ for line in lines:
     for l_ind in range(len(line)):
         if get_index(line, l_ind, 14) != 0:
             break
+
+## reflections:
+# I like this solution: https://github.com/PodolskiBartosz/advent-of-code-2022/blob/main/day-6/main.py
+    # makes me realize that I had extra code because of the examples.
+    # only one line in the input data.
+    # mine is a bit overengineered. creating / calling a function?
+# seems I broke mine...but made a better one. so that's ok.
+
+line = open('06.txt').read()
+def solution(offset):
+    index = 0
+    while len(set(line[index:index+offset])) != offset:
+        index += 1
+    return (index+offset)
+
+print(f"Solution 1: {solution(4)}, and Solution 2: {solution(14)}")
+
+# much nicer.
