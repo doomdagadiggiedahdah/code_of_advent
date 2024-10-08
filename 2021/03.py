@@ -30,17 +30,14 @@ def get_range(ls):
 sample = [16,1,2,0,4,2,7,1,2,14]
 input = open('03.in').read().split(',')
 input = [int(item) for item in input]
-min, max = get_range(input) # uncheck for final test
+low, high = get_range(input) # these are bad names :(
 part_1 = 1000000000000000000000
 
 
-for pos in range(min, max+1):
+for pos in range(low, high+1):
     fuel_count = 0
     for crab in input: # going to a single position.
         fuel_count += abs(pos - crab)
-        # diff = abs(pos - crab)
-        # fuel_cost = sum([item+1 for item in range(diff)])
-        # fuel_count += fuel_cost
     if fuel_count < part_1: part_1 = fuel_count
 
 print(part_1)
@@ -51,14 +48,13 @@ print(part_1)
 input = open('03.in').read().split(',')
 input = [int(item) for item in input]
 
-min, max = get_range(input) # uncheck for final test
+low, high = get_range(input) # uncheck for final test
 # min, max = get_range(sample) # used to get all positions and then check which is best.
 part_2 = 1000000000000000000000
 
-for pos in range(min, max+1):
+for pos in range(low, high+1):
     fuel_count = 0
     for crab in input: # going to a single position.
-        # fuel_count += abs(pos - crab)
         diff = abs(pos - crab)
         fuel_cost = sum([item+1 for item in range(diff)])
         fuel_count += fuel_cost
@@ -87,5 +83,13 @@ take all the crabs, compute abs val diff from pos, add to var
 ---
 - dang, that one took 30 min. I got a bit confused on the second half.
 - what went wrong?
-- 
+- I didn't test very well for the changing of the fuel computation
+- I should've taken some of the examples (Move from 16 to 5: 66 fuel) and recreated that.
+    - I came to the correct answer pretty quickly (as soon as I mentioned Iwas scared of it, actually)
+    - but doing that in a REPL would've been good to sanity check
+    - worth mentoining that 30 min on this is a really long time. I've got a 90 min coding assignment.
+        - sped is a factor here.
+    - once I verified the solution, then I should've incorporated it into the program.
+    - I also should've split up the working code from the not working code.
+        - I got confused about what was working and what wasn't, and so I had to sanity check from the beginning.
 """
