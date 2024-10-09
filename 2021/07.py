@@ -28,7 +28,7 @@ def get_range(ls):
     return low, high
 
 sample = [16,1,2,0,4,2,7,1,2,14]
-input = open('03.in').read().split(',')
+input = open('07.in').read().split(',')
 input = [int(item) for item in input]
 low, high = get_range(input) # these are bad names :(
 part_1 = 1000000000000000000000
